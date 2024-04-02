@@ -1,10 +1,13 @@
 package tn.esprit.esprithub.services;
 
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import tn.esprit.esprithub.entities.Housing;
 import tn.esprit.esprithub.repositories.IHousingRepository;
 
 import java.util.List;
-
+@Service
+@AllArgsConstructor
 public class HousingServices implements IHousingServices {
 
 
