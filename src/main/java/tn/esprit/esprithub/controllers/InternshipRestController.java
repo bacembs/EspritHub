@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.esprithub.entities.Filee;
 import tn.esprit.esprithub.entities.Internship;
+import tn.esprit.esprithub.entities.Roles;
+import tn.esprit.esprithub.entities.User;
 import tn.esprit.esprithub.repository.FileRepository;
+import tn.esprit.esprithub.repository.UserRepository;
 import tn.esprit.esprithub.services.InternshipService;
 
 import java.io.IOException;
@@ -27,6 +30,8 @@ public class InternshipRestController {
     private final FileRepository fileRepo;
     @Autowired
     private final JavaMailSender mailSender;
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
     public InternshipRestController(InternshipService internshipService, FileRepository fileRepo, JavaMailSender mailSender) {
@@ -41,7 +46,6 @@ public class InternshipRestController {
         Internship createdInternship = internshipService.createInternship(internship);
         return ResponseEntity.ok(createdInternship);
     }
-
     @GetMapping("/getInternshipById/{internshipId}")
     public ResponseEntity<Internship> getInternshipById(@PathVariable Long internshipId) {
         Internship internship = internshipService.getInternshipById(internshipId);
@@ -97,6 +101,7 @@ public class InternshipRestController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }*/
+
 
     @PostMapping("/addFile/{internshipId}")
     public ResponseEntity<?> addFile(@PathVariable("internshipId") Long internshipId, @RequestParam("file") MultipartFile file) {
