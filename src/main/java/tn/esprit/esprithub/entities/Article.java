@@ -18,7 +18,7 @@ public class Article implements Serializable {
     @Enumerated(EnumType.STRING)
     Mycategory category;
     @Enumerated(EnumType.STRING)
-    Mycondition condition;
+    Mycondition mycondition;
     String imgArticle;
     String descriptionArticle;
     Float priceArticle;
