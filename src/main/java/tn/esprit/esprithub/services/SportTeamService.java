@@ -33,6 +33,7 @@ public class SportTeamService implements ISportTeamService{
     private IFieldRepository fieldRepository;
     private IReservationRepository reservationRepository;
     private EntityManager entityManager;
+    private IReservationService reservationService;
 
     @Override
     public SportTeam addSportTeam(SportTeam sportTeam) {
@@ -330,13 +331,52 @@ public SportTeam addSportTeamCap3(String teamName, Long captainId, MultipartFile
     public List<User> getUsersBySportTeamId(Long sportTeamId) {
         return sportTeamRepository.findUserIdsBySportTeamId(sportTeamId);
     }
+//
+//@Override
+//public void makeTeamReservation(Long sportTeamId, Long captainId, Long fieldId, Reservation reservation) {
+//    SportTeam sportTeam = sportTeamRepository.findById(sportTeamId).orElse(null);
+//    Field field = fieldRepository.findById(fieldId).orElse(null);
+//
+//
+//
+//    if (sportTeam != null && sportTeam.getCaptain().getUserId().equals(captainId) && field != null) {
+//        Reservation teamReservation = new Reservation();
+//        teamReservation.setStartDate(reservation.getStartDate());
+//        teamReservation.setEndDate(reservation.getEndDate());
+//        teamReservation.setNbPlayers(reservation.getNbPlayers());
+//        teamReservation.setResStatus(reservation.getResStatus());
+//        teamReservation.setResType(reservation.getResType());
+//        teamReservation.setFields(field);
+//
+//        Set<User> teamMembers = sportTeam.getUsers();
+//
+//        for (User member : teamMembers) {
+//            member.getReservations().add(teamReservation);
+//        }
+//
+//        long nbPlayers = teamMembers.size();
+//        teamReservation.setNbPlayers(nbPlayers);
+//
+//        reservationRepository.save(teamReservation);
+//        userRepository.saveAll(teamMembers);
+//    } else {
+//        throw new IllegalArgumentException("Only the captain can make a team reservation and the provided field must exist.");
+//    }
+//}
 
+
+    //changed after merge
 @Override
 public void makeTeamReservation(Long sportTeamId, Long captainId, Long fieldId, Reservation reservation) {
     SportTeam sportTeam = sportTeamRepository.findById(sportTeamId).orElse(null);
     Field field = fieldRepository.findById(fieldId).orElse(null);
 
     if (sportTeam != null && sportTeam.getCaptain().getUserId().equals(captainId) && field != null) {
+        // Check if the field is available for reservation
+        if (!reservationService.isFieldAvailableForReservation(fieldId, reservation.getStartDate(), reservation.getEndDate())) {
+            throw new IllegalArgumentException("Field is not available for the given time slot");
+        }
+
         Reservation teamReservation = new Reservation();
         teamReservation.setStartDate(reservation.getStartDate());
         teamReservation.setEndDate(reservation.getEndDate());
@@ -348,7 +388,9 @@ public void makeTeamReservation(Long sportTeamId, Long captainId, Long fieldId, 
         Set<User> teamMembers = sportTeam.getUsers();
 
         for (User member : teamMembers) {
-            member.getReservations().add(teamReservation);
+            if(member.isParticipationTeam()) {
+                member.getReservations().add(teamReservation);
+            }
         }
 
         long nbPlayers = teamMembers.size();

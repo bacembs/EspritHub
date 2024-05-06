@@ -74,22 +74,63 @@ public class ReservationRestController {
     }
 
     //c bon angular
+//    @PostMapping("/users/{userId}/{fieldId}/reserve")
+//    public ResponseEntity<Reservation> makeReservationForUser(@PathVariable Long userId,
+//                                                              @PathVariable Long fieldId,
+//                                                              @RequestBody Reservation reservation) {
+//        if (reservation == null || reservation.getStartDate() == null || reservation.getEndDate() == null ||
+//                reservation.getResStatus() == null || reservation.getResType() == null) {
+//            return ResponseEntity.badRequest().body(null);
+//        }
+//
+//        Reservation savedReservation = reservationService.addReservationForUser(userId, fieldId, reservation);
+//        if (savedReservation != null) {
+//            return ResponseEntity.ok(savedReservation);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
+//    @PostMapping("/users/{userId}/{fieldId}/reserve")
+//    public ResponseEntity<Reservation> makeReservationForUser(@PathVariable Long userId,
+//                                                              @PathVariable Long fieldId,
+//                                                              @RequestBody Reservation reservation) {
+//        if (reservation == null || reservation.getStartDate() == null || reservation.getEndDate() == null ||
+//                reservation.getResStatus() == null || reservation.getResType() == null) {
+//            return ResponseEntity.badRequest().body(null);
+//        }
+//
+//        try {
+//            Reservation savedReservation = reservationService.addReservationForUser(userId, fieldId, reservation);
+//            return ResponseEntity.ok(savedReservation);
+//        } catch (IllegalArgumentException ex) {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
     @PostMapping("/users/{userId}/{fieldId}/reserve")
-    public ResponseEntity<Reservation> makeReservationForUser(@PathVariable Long userId,
-                                                              @PathVariable Long fieldId,
-                                                              @RequestBody Reservation reservation) {
+    public ResponseEntity<?> makeReservationForUser(@PathVariable Long userId,
+                                                    @PathVariable Long fieldId,
+                                                    @RequestBody Reservation reservation) {
         if (reservation == null || reservation.getStartDate() == null || reservation.getEndDate() == null ||
                 reservation.getResStatus() == null || reservation.getResType() == null) {
-            return ResponseEntity.badRequest().body(null);
+            // Return a bad request response with a custom error message
+            return ResponseEntity.badRequest().body("Invalid reservation request. Please provide all required fields.");
         }
 
-        Reservation savedReservation = reservationService.addReservationForUser(userId, fieldId, reservation);
-        if (savedReservation != null) {
+        try {
+            Reservation savedReservation = reservationService.addReservationForUser(userId, fieldId, reservation);
+            // Return the saved reservation if successful
             return ResponseEntity.ok(savedReservation);
-        } else {
-            return ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException ex) {
+            // Return a not found response with a custom error message
+            if (ex.getMessage().equals("Field is not available for the given time slot")) {
+                return ResponseEntity.badRequest().body("Failed to make reservation: " + ex.getMessage());
+            } else {
+                return ResponseEntity.notFound().build();
+            }
         }
     }
+
+
 
     @GetMapping("/checkFieldAvailability/{fieldId}")
     public ResponseEntity<String> checkFieldAvailability(
