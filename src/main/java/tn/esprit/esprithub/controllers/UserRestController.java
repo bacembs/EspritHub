@@ -17,7 +17,7 @@ public class UserRestController {
     public User addUser (@RequestBody User user){
         return userService.addUser(user);
     }
-    @PutMapping("/update")
+    @PutMapping("/update/{userId}")
     public User updateUser (@RequestBody User user){
         return userService.updateUser(user);
     }

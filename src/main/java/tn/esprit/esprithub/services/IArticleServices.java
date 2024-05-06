@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public interface IArticleServices {
+public interface    IArticleServices {
     //public void addArticleWithPhoto(Article article, MultipartFile photoFile);
     public void addArticleWithPhoto(Long userId, Article article, MultipartFile photoFile);
     public void deleteArticle(Long articleID);
