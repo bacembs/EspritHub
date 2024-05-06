@@ -1,11 +1,13 @@
 package tn.esprit.esprithub.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -23,6 +25,7 @@ public class User implements Serializable {
     String lastName;
     String email;
     String password;
+    String adresse;
     int phone;
     @Enumerated(EnumType.STRING)
     Roles role;
@@ -50,5 +53,11 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "users")
     Set<FreelanceJob> jobs;
+    @JsonBackReference
+    @OneToMany(mappedBy = "owner")
+    private List<Housing> ownedHousing;
+
+    @ManyToMany(mappedBy = "renters")
+    private List<Housing> rentedHousing;
 
 }
