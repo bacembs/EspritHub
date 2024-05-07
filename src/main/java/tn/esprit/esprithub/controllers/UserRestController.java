@@ -17,10 +17,8 @@ public class UserRestController {
     public User addUser (@RequestBody User user){
         return userService.addUser(user);
     }
-    @PutMapping("/update/{userId}")
-    public User updateUser (@RequestBody User user){
-        return userService.updateUser(user);
-    }
+    @PutMapping ("/update/{userId}")
+    public User updateUser (@PathVariable Long userId, @RequestBody User user){return userService.updateUser(userId, user);}
     @GetMapping  ("/{userId}")
     public User getUser (@PathVariable Long userId){
         return userService.getUserById(userId);
