@@ -1,6 +1,7 @@
 package tn.esprit.esprithub.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -19,24 +20,17 @@ import java.util.Set;
 public class Event implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idEvent;
-    String labelle;
-    String description;
-    @Temporal(TemporalType.DATE)
-    Date dateDebut;
-    @Temporal(TemporalType.DATE)
-    Date DateFin;
-    String lieu;
-    int etat;
-    String image;
-    private int nbparticipant;
-    private int nbplace;
+    Long eventId;
+    String titleEvent;
+    String descriptionEvent;
+    LocalDateTime dateEvent;
+    String locationEvent;
+    String categoryEvent;
+    String imgEvent;
+    int capacityEvent;
+    @Enumerated(EnumType.STRING)
+    Estatus statusEvent;
 
-    @JsonIgnore
-    @ManyToOne
-    User user;
-
-    @JsonIgnore
-    @OneToOne
-    private Cagnotte cagnotte;
+    @OneToMany(mappedBy = "events")
+    Set<Participants> participants;
 }
