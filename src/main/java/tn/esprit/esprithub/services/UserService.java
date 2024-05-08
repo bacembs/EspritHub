@@ -123,8 +123,8 @@ public class UserService implements IUserService {
                 if (!existingComplaint.isPresent()) {
                     Complaint complaint = new Complaint();
                     complaint.setEmail(email);
-                    complaint.setDescriptionComplaint("Malicious activity detected"); // Set default description
-                    complaint.setStatusComplaint(Cstatus.pending); // Set default status
+                    complaint.setDescriptionComplaint("Malicious activity detected");
+                    complaint.setStatusComplaint(Cstatus.pending);
                     complaintRepository.save(complaint);
                     savedEmails.add(email);
                     System.out.println(email);
