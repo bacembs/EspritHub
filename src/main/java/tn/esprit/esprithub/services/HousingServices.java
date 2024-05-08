@@ -1,6 +1,5 @@
 package tn.esprit.esprithub.services;
 
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.esprithub.entities.Housing;
@@ -10,7 +9,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class housingServices  implements IhousingServices{
+public class HousingServices implements IHousingServices {
     final private IHousingRepository housingrepo;
     @Override
     public List<Housing> getAll() {

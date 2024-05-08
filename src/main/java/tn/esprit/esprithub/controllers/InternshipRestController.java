@@ -147,7 +147,7 @@ public class InternshipRestController {
 
     ////////////////////////mail///////////////////////
 
-    @PostMapping("/sendEmail")
+    @PostMapping("/sendEmaile")
     public ResponseEntity<?> sendSimpleEmail(@RequestParam("toEmail") String toEmail, @RequestParam("subject") String subject, @RequestParam("body") String body) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();

@@ -7,10 +7,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import tn.esprit.esprithub.entities.Feedback;
 import tn.esprit.esprithub.entities.Housing;
-import tn.esprit.esprithub.services.IfeedBackServices;
-import tn.esprit.esprithub.services.IhousingServices;
+import tn.esprit.esprithub.services.IHousingServices;
 
 import java.util.List;
 
@@ -20,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/housing")
 public class HousingRestController {
-    private IhousingServices servicehousing ;
+    private IHousingServices servicehousing ;
 
     @GetMapping("/all")
     public ResponseEntity<List<Housing>> getAllhousings() {

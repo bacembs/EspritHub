@@ -1,5 +1,6 @@
 package tn.esprit.esprithub.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -19,8 +20,10 @@ public class Complaint implements Serializable {
     String descriptionComplaint;
     @Enumerated(EnumType.STRING)
     Cstatus statusComplaint;
+    String email;
 
     @ManyToOne
+    @JsonIgnore
     User users;
 
 }
