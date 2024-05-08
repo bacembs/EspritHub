@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import tn.esprit.esprithub.entities.Complaint;
+import tn.esprit.esprithub.entities.User;
 import tn.esprit.esprithub.repositories.IComplaintRepository;
 
 import java.util.List;
