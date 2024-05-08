@@ -345,6 +345,9 @@ public void joinReservation(Long userId, Long reservationId) {
     reservation.getUsers().add(user);
     user.getReservations().add(reservation);
     reservation.setNbPlayers(reservation.getNbPlayers() + 1);
+    if (reservation.getNbPlayers() >= reservation.getFields().getCapacityField()) {
+        reservation.setResStatus(Rstatus.confirmed);
+    }
     reservationRepository.save(reservation);
     userRepository.save(user);
 }
@@ -362,7 +365,9 @@ public void joinReservation(Long userId, Long reservationId) {
         user.getReservations().remove(reservation);
 
         reservation.setNbPlayers(reservation.getNbPlayers() - 1);
-
+        if (reservation.getNbPlayers() < reservation.getFields().getCapacityField()) {
+            reservation.setResStatus(Rstatus.pending);
+        }
         reservationRepository.save(reservation);
         userRepository.save(user);
     }
