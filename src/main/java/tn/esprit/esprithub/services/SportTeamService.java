@@ -8,10 +8,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import tn.esprit.esprithub.entities.Field;
-import tn.esprit.esprithub.entities.Reservation;
-import tn.esprit.esprithub.entities.SportTeam;
-import tn.esprit.esprithub.entities.User;
+import tn.esprit.esprithub.entities.*;
 import tn.esprit.esprithub.repository.IFieldRepository;
 import tn.esprit.esprithub.repository.IReservationRepository;
 import tn.esprit.esprithub.repository.ISportTeamRepository;
@@ -417,7 +414,7 @@ public SportTeam addSportTeamCap3(String teamName, Long captainId, MultipartFile
     public void makeTeamReservation(Long sportTeamId, Long captainId, Long fieldId, Reservation reservation) {
         SportTeam sportTeam = sportTeamRepository.findById(sportTeamId).orElse(null);
         Field field = fieldRepository.findById(fieldId).orElse(null);
-
+        Long nbPl=0L;
         if (sportTeam != null && sportTeam.getCaptain().getUserId().equals(captainId) && field != null) {
             // Check if the field is available for reservation
             if (!reservationService.isFieldAvailableForReservation(fieldId, reservation.getStartDate(), reservation.getEndDate())) {
@@ -437,12 +434,16 @@ public SportTeam addSportTeamCap3(String teamName, Long captainId, MultipartFile
             for (User member : teamMembers) {
                 if(member.isParticipationTeam()) {
                     member.getReservations().add(teamReservation);
+                    nbPl=nbPl+1;
                 }
             }
 
-            long nbPlayers = teamMembers.size();
-            teamReservation.setNbPlayers(nbPlayers);
+            int nbPlayers = teamMembers.size();
+            teamReservation.setNbPlayers(nbPl);
 
+            if (nbPl >= field.getCapacityField()) {
+                teamReservation.setResStatus(Rstatus.confirmed);
+            }
             reservationRepository.save(teamReservation);
             userRepository.saveAll(teamMembers);
         } else {
