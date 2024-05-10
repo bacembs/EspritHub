@@ -70,6 +70,7 @@ public class User implements UserDetails, Principal {
     boolean participationTeam =false;
 
 
+
     @OneToMany(mappedBy = "users")
     @JsonIgnore
 
