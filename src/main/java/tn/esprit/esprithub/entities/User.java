@@ -100,7 +100,7 @@ public class User implements UserDetails, Principal {
     @JoinTable(name = "user_reservation",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "reservation_id"))
-    private Set<Reservation> reservations = new HashSet<>();
+    private final Set<Reservation> reservations = new HashSet<>();
 //    @ManyToMany
 //    @JsonIgnore
 //    Set<Reservation>reservations= new HashSet<>();

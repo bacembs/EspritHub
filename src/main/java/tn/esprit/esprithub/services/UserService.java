@@ -113,7 +113,7 @@ public class UserService implements IUserService {
         List<String> savedEmails = new ArrayList<>();
 
         for (String email : usersWithEmails) {
-            Optional<User> userOptional = userRepository.findByEmail(email); // Fetch user by email
+            Optional<User> userOptional = userRepository.findByEmail(email); // Fetch bel email mte3o
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
 
@@ -129,9 +129,7 @@ public class UserService implements IUserService {
                     savedEmails.add(email);
                     System.out.println(email);
                 } else {
-                    // Handle case where complaint already exists for this email
-                    // You may log an error or skip saving the complaint
-                    // For example:
+
                     System.out.println("Complaint already exists for email: " + email);
                 }
             }
